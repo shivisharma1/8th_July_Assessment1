@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/regform.css">
+</head>
+<body>
+    
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow my-5">
+          <h4 class="card-header">Register</h4>
+          <div class="card-body">
+            <form>
+              <div class="form-group">
+                <label for="name">First Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="form-control border"
+                />
+                <small class="form-text text-danger feedback"></small>
+            </div>
+            
+
+                <div class="form-group">
+                    <label for="name">Last Name</label>
+                    <input
+                      type="text"
+                      id="lname"
+                      name="lname"
+                      class="form-control border"
+                    />
+                <small class="form-text text-danger feedback"></small>
+              </div>
+
+              <!-- <label for="gender">Gender</label><br>
+                <input type="radio" id="female" name="female" value="female">
+                <label for="female">Female</label><br>
+                <input type="radio" id="male" name="male" value="CSS">
+                <label for="male">Male</label><br> -->
+
+              <p>Gender</p>
+               <input type="radio" id="female" name="fav_language" value="female">
+               <label for="female">Female</label><br>
+               <input type="radio" id="male" name="fav_language" value="male">
+               <label for="male">Male</label><br><br>
+
+            <div class="form-group">
+                <label for="phno">Phone Number</label>
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    class="form-control border"
+                    />
+                <small class="form-text text-danger feedback"></small>
+                </div>
+
+              <div class="form-group">
+                <label for="email">Email address</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-control border"
+                />
+                <small class="form-text text-danger feedback"></small>
+              </div>
+
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  class="form-control border"
+                  autocomplete="off"
+                />
+                <small class="form-text text-danger feedback"></small>
+              </div>
+
+              <div class="form-group">
+                <label for="confirmPassword">Confirm password</label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  class="form-control border"
+                  autocomplete="off"
+                />
+                <small class="form-text text-danger feedback"></small>
+              </div>
+
+              <div class="custom-control custom-switch mb-3">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="showPassword"
+                  name="showPassword"
+                />
+                <label class="custom-control-label" for="showPassword"
+                  >Show password</label
+                >
+              </div>
+              <button
+                type="submit"
+                class="btn btn-outline-dark"
+                name="btn"
+                disabled
+              >
+                Register
+                
+              </button>
+
+              <button
+                type="submit"
+                class="btn btn-outline-dark"
+                id = "login"
+                name="login"
+                disabled
+              >
+                Login
+                
+              </button>
+              
+            </form>
+          </div>
+          <div class="card-footer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="/regform.js"></script>
+</body>
+</html>
