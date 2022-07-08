@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div>
+        <div class="reg-form">
+            <form id="reg-form" action="">
+                <label for="fname">First Name
+                    <input name="fname" id="fname" type="text">
+                </label>
+
+                <label for="lname">Last Name
+                    <input name="lname" id="lname" type="text">
+                </label>
+                <div id="name-error"></div>
+
+                <label for="number">Phone Number
+                    <input name="number" id="number" type="number">
+                </label>
+
+                <label for="email"> Email
+                    <input required name="email" id="email" type="email">
+                </label>
+                <div>
+                    Gender :
+                    <label for="gender">
+                        <input name="gender" id="male" value="male" type="radio">Male
+                    </label>
+                    <label for="gender">
+                        <input name="gender" id="Female" value="Female" type="radio">Female
+                    </label> <label for="gender">
+                        <input name="gender" id="Transgender" value="Transgender" type="radio">Transgender
+                    </label>
+                </div>
+                <label for="password">Password
+                    <input name="password" id="password" type="password">
+                </label>
+                <div id="password-error"></div>
+                <label for="confirm-password">Confirm Password
+                    <input name="confirm-password" id="confirm-password" type="password">
+                </label>
+
+                <button id="register-btn">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <div class="login-form">
+            login form
+            <form>
+                <label for="login-email"> Email
+                    <input required name="login-email" id="login-email" type="email">
+                </label>
+                <label for="login-password">Password
+                    <input required name="login-password" id="login-password" type="password">
+                </label>
+                <button id="login-btn">Login</button>
+            </form>
+        </div>
+    </div>
+    <script src="index.js"></script>
+</body>
+
+</html>
