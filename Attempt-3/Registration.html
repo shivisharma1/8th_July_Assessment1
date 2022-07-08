@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Shivi Sharma -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        
+        const isCharNumber = (c) => {     // self-explainable code
+            return c >= '0' && c <= '9';
+        };
+
+        const isUpper = (c) => (c >= 'A' && c <= 'Z');  
+        const isLower = (c) => (c >= 'a' && c <= 'z');
+        const isLetter = (c) => {
+            return isUpper(c) || isLower(c);
+        };
+
+        const validateName = (s) => {     // self-explainable code
+            return s.length >= 3 && s.charAt(0) !== ' ' && s.charAt(s.length - 1) !== ' '
+        };
+
+        const validatePhone = (s) => {    // self-explainable code
+            return Array.from(s).filter(ch => isCharNumber(ch)).length === s.length && s.length == 10
+        };
+
+
+        const validateEmail = (s) => {
+            const split_at_dot = s.split(".");  // shivi@gmail.com ([shivi@gmail, com])
+            const split_at_at = s.split("@"); // ([shivi, gmail.com])
+            // console.log(split_at_at);
+            // console.log(split_at_dot);
+
+            if (split_at_at.filter(s => s.length == 0).length > 0 || split_at_dot.filter(s => s.length == 0).length > 0 || split_at_at.length <= 1) {
+                return false
+            }
+            
+            let c = split_at_at[split_at_at.length - 1];  // gmail.com
+
+            // console.log("split at => ", split_at_at)
+            // console.log("c => ", c) 
+
+            let domains = c.split('.'); 
+            let len = domains.length;   
+
+            // console.log("domains => ", domains) // (gmail, com)
+            // console.log("domain length =>",len)  // 2 (gmail, com)
+
+            return split_at_at.filter(x => Array.from(x).filter(ch => isLetter(ch) || isCharNumber(ch) || ch === '.' || ch === '_').length === x.length).length === split_at_at.length &&
+                domains.slice(0, len-1).filter(c => c.length >= 2).length === (len - 1);
+        };
+        
+        const validatePassword = (s) => {
+            if (s.length < 8) {
+                return false;
+            }
+            let cap = 0;
+            let special = 0;
+            let spaces = 0;
+            let num = 0;
+            for (let i = 0; i < s.length; i++) {
+                if (isUpper(s.charAt(i))) {     // if there is a capital letter,
+                    cap += 1;                   // inc count
+                } else if (isCharNumber(s.charAt(i))) {
+                    num += 1;                   // if there is a number, inc count
+                } else if (s.charAt(i) === ' ') {
+                    spaces += 1;                // if any spaces, inc count
+                } else if (!isLower(s.charAt(i))) {
+                    special += 1;                   // if speacial char, inc count
+                }
+            }
+            if (spaces > 0 || cap === 0 || special === 0 || num === 0) {
+                return false;
+            }
+            return true;
+        };
+
+        window.addEventListener("load", () => {
+            
+            const root = document.getElementById("root");
+            if (window.location.href.endsWith("login")) {
+                console.log("login page")
+                root.innerHTML = `
+                <form action="/login" method="post" id="login">
+                    <label for="email">Email</label>
+                    <input aria-label="email" type="email" name="email" id="email">
+                    <br>
+                    <br>
+                    <label for="password">Password</label>
+                    <input aria-label="password" type="password" name="password" id="password">
+                    <br>
+                    <br>
+                    <input type="submit" value="Submit">
+                </form>
+                `;
+            } else {
+                // route to registration page
+                console.log("registration page")
+                root.innerHTML = `
+                <form action="/register" method="post" id="register">
+                    <label for="firstname">First Name</label>
+                    <input aria-label="firstname" type="text" name="firstname" id="firstname">
+                    <br>
+                    <br>
+                    <label for="lastname">Last Name</label>
+                    <input aria-label="lastname" type="text" name="lastname" id="lastname">
+                    <br>
+                    <br>
+                    <label for="phone">Phone No.</label>
+                    <input aria-label="phone" type="tel" name="phone" id="phone">
+                    <br>
+                    <br>
+                    <label for="email">Email</label>
+                    <input aria-label="email" type="email" name="email" id="email">
+                    <br>
+                    <br>
+                    <label for="gender">Gender</label>
+                    <input aria-label="gender" type="text" name="gender" id="gender">
+                    <br>
+                    <br>
+                    <label for="password">Password</label>
+                    <input aria-label="password" type="password" name="password" id="password">
+                    <br>
+                    <br>
+                    <label for="confirm_password">Confirm Password</label>
+                    <input aria-label="confirm password" type="password" name="confirm_password" id="confirm_password">
+                    <br>
+                    <br>
+                    <input type="submit" value="Submit">
+                </form>
+                `;
+            }
+
+            const register_form = document.getElementById('register');
+
+            if (register_form) {
+                register_form.addEventListener('submit', (event) => {
+                    
+                    event.preventDefault();
+                    const firstname = document.getElementById('firstname');
+                    console.log(firstname.value);
+                    if (!firstname.value || !validateName(firstname.value)) {
+                        alert("first name is invalid!");
+                        return;
+                    }
+                    const lastname = document.getElementById('lastname');
+                    console.log(lastname.value);
+                    if (!lastname.value || !validateName(lastname.value)) {
+                        alert("last name is invalid");
+                        return;
+                    }
+                    const phone = document.getElementById('phone');
+                    if (!phone.value || !validatePhone(phone.value)) {
+                        alert("phone no. is invalid");
+                        return;
+                    }
+                    const email = document.getElementById('email');
+                    if (!email.value || !validateEmail(email.value)) {
+                        alert("email is invalid");
+                        return;
+                    }
+
+                    const password = document.getElementById('password');
+                    const confirm_password = document.getElementById('confirm_password');
+                    if (!password.value || !confirm_password.value || !validatePassword(password.value)) {
+                        alert("password requires, 1 cap, 1 num, 1 special and no spaces, with a min len of 8");
+                        return;
+                    }
+                    if (password.value !== confirm_password.value) {
+                        alert("password and confirm pass don't match");
+                        return;
+                    }
+
+                    window.localStorage.setItem("firstname", firstname.value);
+                    window.localStorage.setItem("email", email.value);
+                    window.localStorage.setItem("password", password.value);
+                    window.location.href = "/login";
+                });
+            }
+            
+            const login_form = document.getElementById('login');
+            if (login_form) {
+                login_form.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    const email = document.getElementById('email');
+                    const password = document.getElementById('password');
+                    let _name = window.localStorage.getItem("firstname");
+                    let _email = window.localStorage.getItem("email");
+                    let _password = window.localStorage.getItem("password");
+                    if (email.value === _email && password.value === _password) {
+                        alert(`successfully logged in ${_name}`);
+                    } else {
+                        alert("wrong password or email");
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
