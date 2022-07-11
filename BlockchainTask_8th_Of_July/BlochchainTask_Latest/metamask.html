@@ -1,0 +1,444 @@
+<!-- code reviewed by shivi sharma-->
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+  <title>Invoke Wallets</title>
+  <link rel="stylesheet" href="metamask.css">
+
+</head>
+
+<body>
+  <br>
+  <div>
+    <img src="images/ethereum-eth-logo.png" alt="" style="width: 100px;height:100px;" class="center">
+    <img src="images/MetaMask_Fox.svg.webp" alt="" style="width: 100px;height:100px;" class="center">
+  </div>
+
+  <br><br>
+  <div class="typewriter">
+    <h5 style="text-align: center;">Welcome To MetaMask!</h5>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.6.2/ethers.umd.min.js"
+    integrity="sha512-VLIBlhfqpqbMD6ZAPx7uzfF9/WEfVBgbcIfw5i/9k3smQlVupb1yq2WFChUcefVCBdkGrDHywOfnlMAKmK5QZQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.2-rc.0/web3.min.js"
+    integrity="sha512-REWiGZVmhU2S5eIov/DuNrsq4djWnPaAHSvXrbLLLaI0r/gW+wh1utIzxt0iB4IQLgXhNDj5mR0YMBjrkKhVMA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.6.2/ethers.umd.min.js"
+    integrity="sha512-VLIBlhfqpqbMD6ZAPx7uzfF9/WEfVBgbcIfw5i/9k3smQlVupb1yq2WFChUcefVCBdkGrDHywOfnlMAKmK5QZQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script>
+
+    const web3 = new Web3(window.ethereum);
+
+
+    //To check if metamask is installed or not
+
+    function metamaskInstall() {            
+
+      if (typeof window.ethereum !== 'undefined') {
+        console.log(window.ethereum.isMetaMask);
+        alert("MetaMask is installed in your browser!");
+        document.getElementById("myBtn").disabled = true;
+      }
+      else {
+        document.getElementById("myBtn").disabled = false;
+        alert("MetaMask is not installed.");
+        window.location.href = "https://metamask.io/";
+      }
+    }
+
+
+    // Switch to ropsten if not already on it
+
+    async function switchNetwork(ropstenChainId) {  
+      //to switch network
+      try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: web3.utils.toHex(ropstenChainId) }],
+        });
+        alert("You are on Ropsten Chain");
+        showAndHide();
+        getWalletAddress();
+        getBalance();
+        document.getElementsByName("displaytransaction")[0].value = "";
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+     //hide division
+
+    function showAndHide() {
+      const x = document.getElementById('sectionName');     
+      if (x.style.display == 'none') {
+        x.style.display = 'block';
+      }
+    }
+
+      //get wallet address
+
+    async function getWalletAddress() {                 
+      const address = await ethereum.request({ method: 'eth_requestAccounts' });
+      const accounts = await web3.eth.getAccounts();
+      console.log(address);
+      //document.getElementById("balance").innerHTML = balanceInETH  + "ETH";
+      const result = accounts;
+      document.getElementsByName('displaywallet')[0].value = result;
+    }
+
+     //Get native token balance
+
+    async function getBalance() {                       
+      //console.log(web3.eth);
+      address = await ethereum.request({ method: 'eth_requestAccounts' });
+      let balance = await web3.eth.getBalance(address[0]);
+      const result = balance / 1000000000000000000 + " " + "ETH";
+      document.getElementsByName('displaybalance')[0].value = result;
+    }
+
+
+    // Add custom ERC20 token 
+
+    const addShiviToWallet = async () => {    
+    await web3.currentProvider.request({
+      method: "wallet_watchAsset",
+      params: {
+        type: "ERC20", 
+        options: {
+          address: "0xf6C05e6dB2D22a47cC17f3a36A7EC9a70E734ca4", 
+          symbol: "Shivi", 
+          decimals: 0, 
+        },
+      },
+    });
+  };
+ 
+  //Get custom Token Balance
+
+  const usdtabi = [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "allowance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "approve",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "decimals",
+		"outputs": [
+			{
+				"internalType": "uint8",
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "name",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "symbol",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalSupply",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "transfer",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "transferFrom",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]
+
+
+const initializeContract = () => {
+    
+    // Initializing the contracts to access it's methods.
+    const contract = new web3.eth.Contract(
+      usdtabi,
+      "0xf6C05e6dB2D22a47cC17f3a36A7EC9a70E734ca4",
+      {
+        from: '0x6769d0C537648Ca9A4382dA54f8B87038A91CB90',
+      }
+    );
+    return contract;
+  };
+
+
+  const checkBalanceToProceed = async (accounts, values) => {
+
+  userbal = await ethereum.request({ method: 'eth_requestAccounts' });
+  
+   // Initializing the USDT Contract.
+   const contract = initializeContract(accounts);
+   const user = userbal[0];
+   // Fetching the user's USDT Token balance.
+   const userbalance = await contract.methods
+     .balanceOf(userbal[0])
+     .call();
+
+     console.log(userbalance)
+     document.getElementById('displayshivi').value = userbalance + " SHIVI"
+
+  }
+
+  async function getBal() {
+	initializeContract();
+	checkBalanceToProceed();
+  }
+  getBal();
+
+
+  async function transact() {
+
+  adr = await ethereum.request({ method: 'eth_requestAccounts' });
+  const sender = adr[0];
+  const address = document.getElementById('address').value
+  const amount = document.getElementById('shivivalue').value
+  console.log(address)
+  console.log(amount)
+
+  const contract = initializeContract();
+
+  contract.methods
+          .transfer(address, amount)
+          .send({ from: sender })
+          .on("transactionHash", function (transactionHash) {
+            if (transactionHash) {
+              alert("Your transaction is in process, please wait");
+              document.getElementsByName('displaytransaction')[0].value = transactionHash;
+            }
+          })
+
+          .on("receipt", function (receipt) {
+
+            if (receipt.status !== true) {
+              alert("Transaction Failed! Please try again.");
+            } 
+			else {
+              alert("Congratulations! Your Transaction was succesful!");
+              getBal();
+			}
+		})
+
+	}
+
+
+    function copyTransactionId() {
+      const copyText = document.getElementById("transactionid");
+      copyText.select();
+      copyText.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(copyText.value);
+      alert("Copied the text: " + copyText.value);
+
+    }
+
+    function disconnect() {
+      if (confirm("Are you sure, you want to clear everything?")) {
+        location.reload();
+      }
+    }
+
+
+  </script>
+  <br>
+
+
+  <button class="button-62 no-drop" id="myBtn" onclick="metamaskInstall(); showAndHide(); switchNetwork(3); addShiviToWallet(); getWalletAddress(); 
+  getBalance(); getBal();	" style="background-color: lightblue"> Connect To Metamask</button><br><br>
+
+  <div id="sectionName" style="display:none">
+
+    <span class="label warning">Your Wallet Address</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="text" class="textbox" name="displaywallet" readonly> 
+    
+    <br><br> 
+
+    <span class="label warning">Your RopstenETH Balance </span>       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="text" class="textbox" name="displaybalance" readonly> <br><br>
+
+    <span class="label warning">Your Shivi Token Balance </span>       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="text" class="textbox" id="displayshivi" readonly> <br><br>
+
+
+
+    <div class="typewriter">
+      <h5 style="text-align: center;">Easy Transactions!</h5>
+    </div><br>
+
+    <br><br>
+
+    <form method="post">
+      <input name="address" id="address" type="text" class="textbox" placeholder="Reciever Address" required="required"
+        style="text-align: center;" />
+      <input name="shivi" id="shivivalue" type="number" class="textbox" placeholder="Transfer SHIVI" required="required"
+        style="text-align: center;" /> 
+      <input type="button" class="button-63" value="Transact Shivi Tokens" id="submitbtn" onclick="transact();" /><br><br>
+
+      <input type="text" class="textbox" id="transactionid" name="displaytransaction" width="200" height="50px"
+        placeholder="Transaction Hash" style="text-align: center;" readonly>
+
+      <input type="button" class="button-65" value="Click to copy!" onclick="copyTransactionId();" />
+      <input type="button" class="button-65" value="Refresh" onclick="disconnect();" />
+
+  </div>
+  </form>
+  <br><br>
+  <!-- <script src="./metamask.js"></script> -->
+</body>
+
+</html>
